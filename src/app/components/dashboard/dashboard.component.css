@@ -1,0 +1,31 @@
+.avatar {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  background: linear-gradient(45deg, #2196f3, #21cbf3);
+}
+
+.input-group-text {
+  background-color: #f8f9fa;
+  border-right: none;
+}
+
+.form-control:read-only {
+  background-color: #f8f9fa;
+  border-left: none;
+  cursor: default;
+}
+
+.card {
+  border-radius: 10px;
+}
+
+pre {
+  background-color: #2d2d2d;
+  color: #f8f8f2;
+  border-radius: 5px;
+  font-size: 0.9em;
+}

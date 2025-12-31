@@ -1,0 +1,242 @@
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow">
+  <div class="container">
+    <a class="navbar-brand d-flex align-items-center" href="#">
+      <i class="bi bi-microsoft me-2 fs-4"></i>
+      <span class="fw-bold">Azure AD Dashboard</span>
+    </a>
+    
+    <div class="navbar-nav ms-auto">
+      <div class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown">
+          <div class="avatar bg-light text-primary rounded-circle d-flex align-items-center justify-content-center me-2" 
+               style="width: 36px; height: 36px;">
+            <span class="fw-bold">{{ userProfile?.name?.charAt(0) || 'U' }}</span>
+          </div>
+          <span>{{ userProfile?.name || 'User' }}</span>
+        </a>
+        <ul class="dropdown-menu dropdown-menu-end">
+          <li>
+            <h6 class="dropdown-header">
+              <i class="bi bi-person-badge me-2"></i>
+              {{ userProfile?.name }}
+            </h6>
+          </li>
+          <li><hr class="dropdown-divider"></li>
+          <li>
+            <a class="dropdown-item text-danger" (click)="logout()" role="button">
+              <i class="bi bi-box-arrow-right me-2"></i>
+              Logout
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- Main Content -->
+<div class="container py-4">
+  <!-- Welcome Banner -->
+  <div class="alert alert-success mb-4" *ngIf="userProfile">
+    <div class="d-flex align-items-center">
+      <i class="bi bi-check-circle-fill fs-3 me-3"></i>
+      <div>
+        <h4 class="alert-heading mb-1">Welcome, {{ userProfile.name }}! 🎉</h4>
+        <p class="mb-0">You are successfully authenticated with Azure Active Directory.</p>
+      </div>
+    </div>
+  </div>
+  
+  <!-- User Profile Card -->
+  <div class="card border-0 shadow mb-4">
+    <div class="card-header bg-primary text-white">
+      <h4 class="mb-0">
+        <i class="bi bi-person-badge me-2"></i>
+        User Profile Information
+      </h4>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label class="form-label text-muted small">Full Name</label>
+          <div class="input-group">
+            <span class="input-group-text">
+              <i class="bi bi-person"></i>
+            </span>
+            <input type="text" class="form-control" [value]="userProfile?.name || 'Not available'" readonly>
+          </div>
+        </div>
+        
+        <div class="col-md-6 mb-3">
+          <label class="form-label text-muted small">Email Address</label>
+          <div class="input-group">
+            <span class="input-group-text">
+              <i class="bi bi-envelope"></i>
+            </span>
+            <input type="text" class="form-control" [value]="userProfile?.email || 'Not available'" readonly>
+          </div>
+        </div>
+        
+        <div class="col-md-6 mb-3">
+          <label class="form-label text-muted small">Username</label>
+          <div class="input-group">
+            <span class="input-group-text">
+              <i class="bi bi-at"></i>
+            </span>
+            <input type="text" class="form-control" [value]="userProfile?.username || 'Not available'" readonly>
+          </div>
+        </div>
+        
+        <div class="col-12 mb-3">
+          <label class="form-label text-muted small">Assigned Roles</label>
+          <div class="d-flex flex-wrap gap-2">
+            <span *ngFor="let role of userProfile?.roles" class="badge bg-success py-2 px-3">
+              <i class="bi bi-shield-check me-1"></i>
+              {{ role }}
+            </span>
+            <span *ngIf="!userProfile?.roles?.length" class="badge bg-secondary py-2 px-3">
+              <i class="bi bi-shield-x me-1"></i>
+              No roles assigned
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Token Management Card -->
+  <div class="card border-0 shadow mb-4">
+    <div class="card-header bg-warning text-dark">
+      <h4 class="mb-0">
+        <i class="bi bi-key-fill me-2"></i>
+        Access Token Management
+      </h4>
+    </div>
+    <div class="card-body">
+      <div class="alert alert-info mb-4">
+        <i class="bi bi-info-circle me-2"></i>
+        Access tokens are used to authenticate API requests to Microsoft Graph and other protected resources.
+      </div>
+      
+      <div class="text-center mb-4">
+        <button class="btn btn-warning btn-lg px-5 me-3" (click)="getAccessToken()" [disabled]="isLoading">
+          <i class="bi bi-key me-2"></i>
+          {{ isLoading ? 'Getting Token...' : 'Get Access Token' }}
+        </button>
+        
+        <button class="btn btn-success btn-lg px-5 me-3" (click)="simulateApiCall()">
+          <i class="bi bi-send me-2"></i>
+          Simulate API Call
+        </button>
+        
+        <button class="btn btn-outline-danger btn-lg px-5" (click)="clearData()">
+          <i class="bi bi-trash me-2"></i>
+          Clear Data
+        </button>
+      </div>
+      
+      <!-- Token Display -->
+      <div *ngIf="tokenInfo" class="mt-4">
+        <h5 class="mb-3">Token Information</h5>
+        <div class="card bg-light">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <strong>Status:</strong>
+                <span class="badge ms-2" [ngClass]="tokenInfo.hasToken ? 'bg-success' : 'bg-danger'">
+                  {{ tokenInfo.hasToken ? 'Available' : 'Unavailable' }}
+                </span>
+              </div>
+              <div class="col-md-6 mb-3">
+                <strong>Length:</strong> {{ tokenInfo.length }} characters
+              </div>
+              <div class="col-12 mb-3" *ngIf="tokenInfo.preview">
+                <strong>Preview:</strong>
+                <code class="d-block mt-2 p-2 bg-dark text-light rounded">{{ tokenInfo.preview }}</code>
+              </div>
+              <div class="col-12" *ngIf="tokenInfo.message">
+                <strong>Message:</strong> {{ tokenInfo.message }}
+              </div>
+              <div class="col-12" *ngIf="tokenInfo.error">
+                <strong>Error:</strong> 
+                <span class="text-danger">{{ tokenInfo.error }}</span>
+              </div>
+              <div class="col-12">
+                <strong>Timestamp:</strong> {{ tokenInfo.timestamp | date:'medium' }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Loading Spinner -->
+      <div *ngIf="isLoading" class="text-center mt-4">
+        <div class="spinner-border text-warning" style="width: 3rem; height: 3rem;" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+        <p class="mt-3 text-muted">Acquiring token silently from Azure AD...</p>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Features Card -->
+  <div class="row">
+    <div class="col-md-4 mb-4">
+      <div class="card h-100 border-0 shadow">
+        <div class="card-body text-center">
+          <i class="bi bi-shield-check text-success fs-1 mb-3"></i>
+          <h5 class="card-title">Secure</h5>
+          <p class="card-text">Enterprise-grade security with Azure AD</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4 mb-4">
+      <div class="card h-100 border-0 shadow">
+        <div class="card-body text-center">
+          <i class="bi bi-lightning-charge text-warning fs-1 mb-3"></i>
+          <h5 class="card-title">Fast</h5>
+          <p class="card-text">Quick authentication with single sign-on</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4 mb-4">
+      <div class="card h-100 border-0 shadow">
+        <div class="card-body text-center">
+          <i class="bi bi-graph-up text-primary fs-1 mb-3"></i>
+          <h5 class="card-title">API Ready</h5>
+          <p class="card-text">Access Microsoft Graph API securely</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer class="bg-dark text-white py-4 mt-5">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6">
+        <h5>
+          <i class="bi bi-microsoft me-2"></i>
+          Azure AD Authentication Demo
+        </h5>
+        <p class="mb-0 text-muted">Built with Angular 20+ and Bootstrap 5</p>
+      </div>
+      <div class="col-md-6 text-md-end">
+        <p class="mb-1">
+          <a href="https://learn.microsoft.com/en-us/azure/active-directory/develop/" 
+             target="_blank" 
+             class="text-decoration-none text-light">
+            <i class="bi bi-book me-1"></i>
+            Microsoft Documentation
+          </a>
+        </p>
+        <p class="mb-0 text-muted small">
+          <i class="bi bi-info-circle me-1"></i>
+          Check browser console for detailed logs
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
