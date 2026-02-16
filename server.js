@@ -4,11 +4,11 @@ const path = require('path');
 const app = express();
 const port = process.env.PORT || 8080;
 
-app.use(express.static(path.join(__dirname, 'dist/azure-ad-angular')));
+app.use(express.static(path.join(__dirname, 'dist/azure-ad-bootstrap/browser/index.html')));
 
 app.get('/*', (req, res) => {
   res.sendFile(
-    path.join(__dirname, 'dist/azure-ad-angular/index.html')
+    path.join(__dirname, 'dist/azure-ad-bootstrap/browser/index.html')
   );
 });
 
