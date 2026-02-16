@@ -19,19 +19,19 @@ export class LoginComponent implements OnInit {
   msalStatus = 'Checking...';
   
   ngOnInit(): void {
-    console.log('🏁 LoginComponent initialized');
+    //console.log('🏁 LoginComponent initialized');
     
     // Subscribe to loading state
     this.authService.isLoading$.subscribe(loading => {
       this.isLoading = loading;
-      console.log('🔄 Loading state:', loading);
+      //console.log('🔄 Loading state:', loading);
     });
     
     // Subscribe to auth state - redirect if already authenticated
     this.authService.isAuthenticated$.subscribe(isAuth => {
-      console.log('🔐 Auth state changed:', isAuth);
+      //console.log('🔐 Auth state changed:', isAuth);
       if (isAuth) {
-        console.log('✅ Already authenticated, redirecting to dashboard');
+        //console.log('✅ Already authenticated, redirecting to dashboard');
         this.router.navigate(['/dashboard']);
       }
     });
@@ -39,12 +39,12 @@ export class LoginComponent implements OnInit {
     // Check MSAL status after a delay
     setTimeout(() => {
       this.msalStatus = this.authService.getMSALStatus();
-      console.log('📊 MSAL Status:', this.msalStatus);
+      //console.log('📊 MSAL Status:', this.msalStatus);
     }, 1000);
   }
   
   onLogin(): void {
-    console.log('🎯 Login button clicked');
+    //console.log('🎯 Login button clicked');
     this.errorMessage = '';
     this.msalStatus = 'Initializing...';
     
@@ -55,11 +55,12 @@ export class LoginComponent implements OnInit {
   }
   
   testMSAL(): void {
+    /*
     console.log('🧪 Testing MSAL...');
     console.log('Auth Service:', this.authService);
     console.log('Is Loading:', this.isLoading);
     console.log('MSAL Status:', this.msalStatus);
-    
+    */
     // Test MSAL initialization
     this.authService.login();
   }

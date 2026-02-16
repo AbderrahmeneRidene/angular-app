@@ -31,16 +31,16 @@ export class MsalConfigService {
             if (!containsPii) {
               switch (level) {
                 case LogLevel.Error:
-                  console.error('🔴 MSAL Error:', message);
+                  //console.error('🔴 MSAL Error:', message);
                   break;
                 case LogLevel.Info:
-                  console.info('🔵 MSAL Info:', message);
+                  //console.info('🔵 MSAL Info:', message);
                   break;
                 case LogLevel.Warning:
-                  console.warn('🟡 MSAL Warning:', message);
+                  //console.warn('🟡 MSAL Warning:', message);
                   break;
                 case LogLevel.Verbose:
-                  console.debug('🟣 MSAL Verbose:', message);
+                  //console.debug('🟣 MSAL Verbose:', message);
                   break;
               }
             }

@@ -22,7 +22,7 @@ import { environment } from './environments/environment';
 
 // MSAL Instance Factory
 export function MSALInstanceFactory(): IPublicClientApplication {
-  console.log('🔄 Creating MSAL instance...');
+  //console.log('🔄 Creating MSAL instance...');
   
   const msalInstance = new PublicClientApplication({
     auth: {
@@ -41,16 +41,16 @@ export function MSALInstanceFactory(): IPublicClientApplication {
           if (!containsPii) {
             switch (level) {
               case LogLevel.Error:
-                console.error('🔴 MSAL Error:', message);
+                //console.error('🔴 MSAL Error:', message);
                 break;
               case LogLevel.Info:
-                console.info('🔵 MSAL Info:', message);
+                //console.info('🔵 MSAL Info:', message);
                 break;
               case LogLevel.Warning:
-                console.warn('🟡 MSAL Warning:', message);
+                //console.warn('🟡 MSAL Warning:', message);
                 break;
               case LogLevel.Verbose:
-                console.debug('🟣 MSAL Verbose:', message);
+                //console.debug('🟣 MSAL Verbose:', message);
                 break;
             }
           }
@@ -62,9 +62,9 @@ export function MSALInstanceFactory(): IPublicClientApplication {
 
   // Initialize MSAL instance
   msalInstance.initialize().then(() => {
-    console.log('✅ MSAL initialized successfully');
+    //console.log('✅ MSAL initialized successfully');
   }).catch(error => {
-    console.error('❌ MSAL initialization failed:', error);
+    //console.error('❌ MSAL initialization failed:', error);
   });
 
   return msalInstance;
@@ -73,11 +73,11 @@ export function MSALInstanceFactory(): IPublicClientApplication {
 // MSAL Initializer Factory - This ensures MSAL is initialized before Angular app starts
 export function initializeMSAL(msalService: MsalService) {
   return (): Promise<void> => {
-    console.log('🚀 Initializing MSAL service...');
+    //console.log('🚀 Initializing MSAL service...');
     return msalService.instance.initialize().then(() => {
-      console.log('✅ MSAL service initialized');
+      //console.log('✅ MSAL service initialized');
     }).catch(error => {
-      console.error('❌ MSAL service initialization failed:', error);
+      //console.error('❌ MSAL service initialization failed:', error);
     });
   };
 }
