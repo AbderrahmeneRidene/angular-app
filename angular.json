@@ -13,16 +13,18 @@
         "build": {
           "builder": "@angular/build:application",
           "options": {
-            "outputPath": "dist/azure-ad-angular",
+            "outputPath": "dist/azure-ad-angular/browser",
             "index": "src/index.html",
-           
+            "baseHref": "./",
+            "deployUrl": "./",
             "polyfills": ["zone.js"],
             "browser": "src/main.ts",
             "tsConfig": "tsconfig.app.json",
             "assets": [
               {
                 "glob": "**/*",
-                "input": "public"
+                "input": "public",
+                "output": "/"
               }
             ],
             "styles": [
@@ -48,7 +50,10 @@
                   "maximumError": "8kB"
                 }
               ],
-              "outputHashing": "all"
+              "outputHashing": "all",
+              "optimization": true,
+              "sourceMap": false,
+              "extractCss": true
             },
             "development": {
               "optimization": false,
@@ -80,7 +85,8 @@
             "assets": [
               {
                 "glob": "**/*",
-                "input": "public"
+                "input": "public",
+                "output": "/"
               }
             ],
             "styles": [
