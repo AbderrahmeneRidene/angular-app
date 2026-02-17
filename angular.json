@@ -13,23 +13,20 @@
         "build": {
           "builder": "@angular/build:application",
           "options": {
-            "outputPath": "dist/azure-ad-angular/browser",
+            "outputPath": "dist/azure-ad-angular",
             "index": "src/index.html",
-            "baseHref": "./",
-            "deployUrl": "./",
+           
             "polyfills": ["zone.js"],
             "browser": "src/main.ts",
             "tsConfig": "tsconfig.app.json",
             "assets": [
               {
                 "glob": "**/*",
-                "input": "public",
-                "output": "/"
+                "input": "public"
               }
             ],
             "styles": [
-              "node_modules/bootstrap/dist/css/bootstrap.min.css",
-              "node_modules/bootstrap-icons/font/bootstrap-icons.css",
+
               "src/styles.css"
             ],
             "scripts": [
@@ -50,9 +47,7 @@
                   "maximumError": "8kB"
                 }
               ],
-              "outputHashing": "all",
-              "optimization": true,
-              "sourceMap": false
+              "outputHashing": "all"
             },
             "development": {
               "optimization": false,
@@ -84,8 +79,7 @@
             "assets": [
               {
                 "glob": "**/*",
-                "input": "public",
-                "output": "/"
+                "input": "public"
               }
             ],
             "styles": [
