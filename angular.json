@@ -52,8 +52,7 @@
               ],
               "outputHashing": "all",
               "optimization": true,
-              "sourceMap": false,
-              "extractCss": true
+              "sourceMap": false
             },
             "development": {
               "optimization": false,
