@@ -1,4 +1,13 @@
 /* You can add global styles to this file, and also import other style files */
+/* --- Bootstrap Icons fix for Azure --- */
+@font-face {
+  font-family: "bootstrap-icons";
+  src: url("/media/bootstrap-icons-VQNJTM6Q.woff") format("woff"),
+       url("/media/bootstrap-icons-CVBWLLHT.woff2") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+}
+
 /* Custom global styles */
 :root {
   --primary-color: #0d6efd;
