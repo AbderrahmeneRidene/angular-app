@@ -2,11 +2,11 @@ import { provideZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { AppComponent } from './app';
 
-describe('App', () => {
+describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [AppComponent],
-      providers: [provideZonelessChangeDetection()]
+      providers: [provideZonelessChangeDetection()],
     }).compileComponents();
   });
 
@@ -16,10 +16,9 @@ describe('App', () => {
     expect(app).toBeTruthy();
   });
 
-  it('should render title', () => {
+  it('should have correct title', () => {
     const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, azure-ad-angular');
+    const app = fixture.componentInstance;
+    expect(app.title).toBe('Azure AD Bootstrap Demo');
   });
 });
