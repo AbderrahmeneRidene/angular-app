@@ -1,5 +1,3 @@
-# Build and deploy Angular app to Azure Web App (optimized)
-
 name: Build and deploy Angular app to Azure Web App - my-wepapp-ridene
 
 on:
@@ -12,13 +10,13 @@ jobs:
   build:
     runs-on: windows-latest
     permissions:
-      contents: read # Required for actions/checkout
+      contents: read
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up Node.js
+      - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '20.x'
@@ -27,8 +25,6 @@ jobs:
         run: |
           npm install
           npm run build -- --configuration production
-          # tests optionnels, tu peux les commenter si ChromeHeadless pose problème
-          # npm run test -- --watch=false --browsers=ChromeHeadless
 
       - name: Upload Angular build artifact
         uses: actions/upload-artifact@v4
@@ -40,7 +36,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     permissions:
-      id-token: write # Required for OIDC
+      id-token: write
       contents: read
 
     steps:
@@ -48,6 +44,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: angular-dist
+          path: angular-dist-folder
 
       - name: Azure Login
         uses: azure/login@v2
@@ -61,4 +58,4 @@ jobs:
         with:
           app-name: 'my-wepapp-ridene'
           slot-name: 'Production'
-          package: dist/azure-ad-angular/browser
+          package: angular-dist-folder
