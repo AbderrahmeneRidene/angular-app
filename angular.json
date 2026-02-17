@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular/build:application",
           "options": {
-            "outputPath": "dist/azure-ad-bootstrap",
+            "outputPath": "dist/azure-ad-angular",
             "index": "src/index.html",
            
             "polyfills": ["zone.js"],

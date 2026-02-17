@@ -4,5 +4,5 @@
         ".vscode{,/**}"
     ],
     "appService.defaultWebAppToDeploy": "/subscriptions/ec0e829d-64e1-43fd-b721-ecf5b5112773/resourceGroups/rg-angular-free/providers/Microsoft.Web/sites/angular-free-webapp-demo",
-    "appService.deploySubpath": "dist/azure-ad-bootstrap/browser"
+    "appService.deploySubpath": "dist/azure-ad-angular/browser"
 }
