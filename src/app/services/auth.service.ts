@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { MsalService } from '@azure/msal-angular';
 import { BehaviorSubject, Observable, from, tap, catchError, of } from 'rxjs';
+import { EnvService } from './env-service';
 
 export interface UserProfile {
   name: string;
@@ -28,7 +29,7 @@ export class AuthService {
 
   private isMsalInitialized = false;
 
-  constructor() {
+  constructor(private env: EnvService) {
     //console.log('🔄 AuthService constructor called');
     this.checkMSALInitialization();
   }
