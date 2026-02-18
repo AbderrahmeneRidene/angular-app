@@ -1,22 +1,21 @@
 import { bootstrapApplication } from '@angular/platform-browser';
-import { appConfig } from './app/app.config';
 import { AppComponent } from './app/app';
+import { appConfig } from './app/app.config';
+import { EnvService } from './app/services/env-service';
 
-function loadConfig() {
-  return fetch('/assets/config.json')
-    .then(response => {
-      if (!response.ok) {
-        throw new Error('Failed to load config.json');
-      }
-      return response.json();
-    })
-    .then(config => {
-      (window as any).__env = config;
-    });
+async function initApp() {
+  try {
+    const envService = new EnvService();
+    await envService.loadConfig(); // fetch config.json avant bootstrap
+
+    console.log('✅ Configuration loaded:', (window as any).__env);
+
+    // Bootstrap Angular après que la config soit chargée
+    await bootstrapApplication(AppComponent, appConfig);
+    console.log('✅ Angular app bootstrapped successfully');
+  } catch (err) {
+    console.error('❌ Bootstrap error:', err);
+  }
 }
 
-loadConfig()
-  .then(() => {
-    return bootstrapApplication(AppComponent, appConfig);
-  })
-  .catch(err => console.error('Bootstrap error:', err));
+initApp();

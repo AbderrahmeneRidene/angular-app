@@ -12,14 +12,19 @@ export interface MsalConfig {
 })
 export class EnvService {
 
-  private readonly config: MsalConfig;
+  private config!: MsalConfig;
 
-  constructor() {
-    const rawConfig = (window as any).__env;
+  constructor() {}
 
-    if (!rawConfig) {
-      throw new Error('Configuration Azure AD non chargée');
+  /**
+   * Charger dynamiquement la config depuis config.json
+   */
+  async loadConfig(url: string = '/assets/config.json'): Promise<void> {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error('Failed to load config.json');
     }
+    const rawConfig = await response.json();
 
     this.config = {
       clientId: rawConfig.clientId,
@@ -27,19 +32,16 @@ export class EnvService {
       redirectUri: rawConfig.redirectUri,
       scopes: this.parseScopes(rawConfig.scopes)
     };
+
+    // Injecter dans window pour compatibilité globale
+    (window as any).__env = this.config;
   }
 
   private parseScopes(scopes: string | string[]): string[] {
-    if (Array.isArray(scopes)) {
-      return scopes;
-    }
-    if (!scopes) {
-      return [];
-    }
+    if (Array.isArray(scopes)) return scopes;
+    if (!scopes) return [];
     return scopes.split(',').map(s => s.trim());
   }
-
-  // 🔹 Getters publics
 
   get clientId(): string {
     return this.config.clientId;
@@ -56,8 +58,6 @@ export class EnvService {
   get scopes(): string[] {
     return this.config.scopes;
   }
-
-  // 🔹 Helpers utiles MSAL
 
   get authority(): string {
     return `https://login.microsoftonline.com/${this.tenantId}`;
